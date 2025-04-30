@@ -1,0 +1,147 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ChillaxSIM ChatGPT Plugin API",
+    "version": "1.0.0",
+    "description": "Provides ChillaxSIM product listings and generates checkout links for ChatGPT plugin."
+  },
+  "servers": [
+    {
+      "url": "https://api.chillaxsim.com",
+      "description": "ChillaxSIM Production API"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "List all eSIM products",
+        "description": "Returns an array of available ChillaxSIM eSIM plans.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Get a single eSIM product by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The product ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single product object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      }
+    },
+    "/orders/link": {
+      "post": {
+        "summary": "Generate a checkout link",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "product_id"
+                ],
+                "properties": {
+                  "product_id": {
+                    "type": "string",
+                    "description": "ID of the product to purchase"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "description": "Number of units",
+                    "default": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Checkout URL generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "checkout_url": {
+                      "type": "string",
+                      "description": "URL for completing the purchase"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "price_usd",
+          "duration_days"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Product identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Product name"
+          },
+          "price_usd": {
+            "type": "number",
+            "format": "float",
+            "description": "Price in USD"
+          },
+          "duration_days": {
+            "type": "integer",
+            "description": "Validity period in days"
+          }
+        }
+      }
+    }
+  }
+}
