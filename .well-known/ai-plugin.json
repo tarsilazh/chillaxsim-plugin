@@ -9,10 +9,10 @@
   },
   "api": {
     "type": "openapi",
-    "url": "https://github.com/tarsilazh/chillaxsim-plugin/.well-known/openapi.json",
+    "url": "https://tarsilazh.github.com/tarsilazh/chillaxsim-plugin/.well-known/openapi.json",
     "is_user_authenticated": false
   },
-  "logo_url": "https://github.com/tarsilazh/chillaxsim-plugin/assets/chillaxsim-logo.png",
+  "logo_url": "https://tarsilazh.github.com/tarsilazh/chillaxsim-plugin/assets/chillaxsim-logo.png",
   "contact_email": "service@chillaxsim.com",
   "legal_info_url": "https://chillaxsim.com/policies/privacy-policy"
 }
