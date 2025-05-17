@@ -3,22 +3,21 @@
   "info": {
     "title": "ChillaxSIM ChatGPT Plugin API",
     "version": "1.0.0",
-    "description": "Provides ChillaxSIM product listings and generates checkout links for ChatGPT plugin."
+    "description": "Provides ChillaxSIM product listings and generates checkout links for ChatGPT plugin"
   },
   "servers": [
     {
-      "url": "https://api.chillaxsim.com",
-      "description": "ChillaxSIM Production API"
+      "url": "https://<你的-pipedream-domain>.m.pipedream.net",
+      "description": "ChillaxSIM Pipedream API"
     }
   ],
   "paths": {
-    "/products": {
+    "/": {
       "get": {
-        "summary": "List all eSIM products",
-        "description": "Returns an array of available ChillaxSIM eSIM plans.",
+        "summary": "列出所有 eSIM 产品",
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "返回 Product 数组",
             "content": {
               "application/json": {
                 "schema": {
@@ -31,79 +30,26 @@
             }
           }
         }
-      }
-    },
-    "/products/{id}": {
-      "get": {
-        "summary": "Get a single eSIM product by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The product ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single product object",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Product"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Product not found"
-          }
-        }
-      }
-    },
-    "/orders/link": {
+      },
       "post": {
-        "summary": "Generate a checkout link",
+        "summary": "生成 eSIM 的结账链接",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "product_id"
-                ],
-                "properties": {
-                  "product_id": {
-                    "type": "string",
-                    "description": "ID of the product to purchase"
-                  },
-                  "quantity": {
-                    "type": "integer",
-                    "description": "Number of units",
-                    "default": 1
-                  }
-                }
+                "$ref": "#/components/schemas/CheckoutRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Checkout URL generated",
+            "description": "返回结账链接",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "checkout_url": {
-                      "type": "string",
-                      "description": "URL for completing the purchase"
-                    }
-                  }
+                  "$ref": "#/components/schemas/CheckoutResponse"
                 }
               }
             }
@@ -116,32 +62,123 @@
     "schemas": {
       "Product": {
         "type": "object",
-        "required": [
-          "id",
-          "name",
-          "price_usd",
-          "duration_days"
-        ],
         "properties": {
           "id": {
             "type": "string",
-            "description": "Product identifier"
+            "description": "Shopify Product 全局 ID"
           },
-          "name": {
+          "title": {
             "type": "string",
-            "description": "Product name"
+            "description": "产品标题"
           },
-          "price_usd": {
+          "coverage": {
+            "type": "string",
+            "nullable": true,
+            "description": "覆盖区域"
+          },
+          "ekyc": {
+            "type": "string",
+            "nullable": true,
+            "description": "eKYC 要求"
+          },
+          "dataunit": {
+            "type": "string",
+            "nullable": true,
+            "description": "数据单位"
+          },
+          "activationinfo": {
+            "type": "string",
+            "nullable": true,
+            "description": "激活信息"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variant"
+            }
+          }
+        },
+        "required": ["id","title","variants"]
+      },
+      "Variant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Shopify Variant 全局 ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "变体标题"
+          },
+          "price": {
             "type": "number",
             "format": "float",
-            "description": "Price in USD"
+            "description": "价格"
           },
-          "duration_days": {
-            "type": "integer",
-            "description": "Validity period in days"
+          "currency": {
+            "type": "string",
+            "description": "货币代码"
+          },
+          "planname": {
+            "type": "string",
+            "nullable": true,
+            "description": "计划名称"
+          },
+          "data": {
+            "type": "string",
+            "nullable": true,
+            "description": "数据量"
+          },
+          "service_days": {
+            "type": "string",
+            "nullable": true,
+            "description": "服务天数"
+          },
+          "package_type": {
+            "type": "string",
+            "nullable": true,
+            "description": "套餐类型"
+          },
+          "telephony": {
+            "type": "string",
+            "nullable": true,
+            "description": "是否支持语音"
+          },
+          "reducedspeed": {
+            "type": "string",
+            "nullable": true,
+            "description": "降速后速率"
           }
-        }
+        },
+        "required": ["id","title","price","currency"]
+      },
+      "CheckoutRequest": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "description": "要购买的变体 ID"
+          },
+          "quantity": {
+            "type": "integer",
+            "default": 1,
+            "description": "购买数量"
+          }
+        },
+        "required": ["product_id"]
+      },
+      "CheckoutResponse": {
+        "type": "object",
+        "properties": {
+          "checkout_url": {
+            "type": "string",
+            "description": "跳转 Shopify 结账的链接"
+          }
+        },
+        "required": ["checkout_url"]
       }
     }
   }
 }
+
