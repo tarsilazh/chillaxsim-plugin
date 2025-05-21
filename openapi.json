@@ -1,0 +1,187 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ChillaxSIM ChatGPT Plugin API",
+    "version": "1.0.0",
+    "description": "Provides ChillaxSIM product listings and generates checkout links for ChatGPT plugin."
+  },
+  "servers": [
+    {
+      "url": "https://eo1slwltkmbxza3.m.pipedream.net",
+      "description": "ChillaxSIM Pipedream API"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "List all available eSIM products",
+        "operationId": "getProducts",
+        "responses": {
+          "200": {
+            "description": "Returns a list of eSIM products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkout": {
+      "post": {
+        "summary": "Generate checkout link for eSIM product",
+        "operationId": "createCheckoutLink",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the checkout URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckoutResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Shopify global product ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Product title"
+          },
+          "coverage": {
+            "type": "string",
+            "nullable": true,
+            "description": "Coverage region"
+          },
+          "ekyc": {
+            "type": "string",
+            "nullable": true,
+            "description": "eKYC requirements"
+          },
+          "dataunit": {
+            "type": "string",
+            "nullable": true,
+            "description": "Unit of data measurement"
+          },
+          "activationinfo": {
+            "type": "string",
+            "nullable": true,
+            "description": "Activation instructions"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variant"
+            }
+          }
+        },
+        "required": ["id", "title", "variants"]
+      },
+      "Variant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Shopify global variant ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Variant title"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "Price"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code (e.g. USD)"
+          },
+          "planname": {
+            "type": "string",
+            "nullable": true,
+            "description": "Plan name"
+          },
+          "data": {
+            "type": "string",
+            "nullable": true,
+            "description": "Amount of data included"
+          },
+          "service_days": {
+            "type": "string",
+            "nullable": true,
+            "description": "Service duration in days"
+          },
+          "package_type": {
+            "type": "string",
+            "nullable": true,
+            "description": "Type of package (e.g. data only, voice+data)"
+          },
+          "telephony": {
+            "type": "string",
+            "nullable": true,
+            "description": "Voice support"
+          },
+          "reducedspeed": {
+            "type": "string",
+            "nullable": true,
+            "description": "Speed after data cap is reached"
+          }
+        },
+        "required": ["id", "title", "price", "currency"]
+      },
+      "CheckoutRequest": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "description": "Variant ID to purchase"
+          },
+          "quantity": {
+            "type": "integer",
+            "default": 1,
+            "description": "Quantity to purchase"
+          }
+        },
+        "required": ["product_id"]
+      },
+      "CheckoutResponse": {
+        "type": "object",
+        "properties": {
+          "checkout_url": {
+            "type": "string",
+            "description": "Redirect URL to Shopify checkout"
+          }
+        },
+        "required": ["checkout_url"]
+      }
+    }
+  }
+}
