@@ -77,22 +77,18 @@
           },
           "coverage": {
             "type": "string",
-            "nullable": true,
             "description": "Coverage region"
           },
           "ekyc": {
             "type": "string",
-            "nullable": true,
             "description": "eKYC requirements"
           },
           "dataunit": {
             "type": "string",
-            "nullable": true,
             "description": "Unit of data measurement"
           },
           "activationinfo": {
             "type": "string",
-            "nullable": true,
             "description": "Activation instructions"
           },
           "variants": {
@@ -126,32 +122,26 @@
           },
           "planname": {
             "type": "string",
-            "nullable": true,
             "description": "Plan name"
           },
           "data": {
             "type": "string",
-            "nullable": true,
             "description": "Amount of data included"
           },
           "service_days": {
             "type": "string",
-            "nullable": true,
             "description": "Service duration in days"
           },
           "package_type": {
             "type": "string",
-            "nullable": true,
             "description": "Type of package (e.g. data only, voice+data)"
           },
           "telephony": {
             "type": "string",
-            "nullable": true,
             "description": "Voice support"
           },
           "reducedspeed": {
             "type": "string",
-            "nullable": true,
             "description": "Speed after data cap is reached"
           }
         },
