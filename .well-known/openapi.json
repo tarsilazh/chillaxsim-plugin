@@ -3,7 +3,7 @@
   "info": {
     "title": "ChillaxSIM ChatGPT Plugin API",
     "version": "1.0.0",
-    "description": "Provides ChillaxSIM product listings and generates checkout links for ChatGPT plugin"
+    "description": "Provides ChillaxSIM product listings and generates checkout links for ChatGPT plugin."
   },
   "servers": [
     {
@@ -12,12 +12,13 @@
     }
   ],
   "paths": {
-    "/": {
+    "/products": {
       "get": {
-        "summary": "列出所有 eSIM 产品",
+        "summary": "List all available eSIM products",
+        "operationId": "getProducts",
         "responses": {
           "200": {
-            "description": "返回 Product 数组",
+            "description": "Returns a list of eSIM products",
             "content": {
               "application/json": {
                 "schema": {
@@ -30,9 +31,12 @@
             }
           }
         }
-      },
+      }
+    },
+    "/checkout": {
       "post": {
-        "summary": "生成 eSIM 的结账链接",
+        "summary": "Generate checkout link for eSIM product",
+        "operationId": "createCheckoutLink",
         "requestBody": {
           "required": true,
           "content": {
@@ -45,7 +49,7 @@
         },
         "responses": {
           "200": {
-            "description": "返回结账链接",
+            "description": "Returns the checkout URL",
             "content": {
               "application/json": {
                 "schema": {
@@ -65,31 +69,31 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "Shopify Product 全局 ID"
+            "description": "Shopify global product ID"
           },
           "title": {
             "type": "string",
-            "description": "产品标题"
+            "description": "Product title"
           },
           "coverage": {
             "type": "string",
             "nullable": true,
-            "description": "覆盖区域"
+            "description": "Coverage region"
           },
           "ekyc": {
             "type": "string",
             "nullable": true,
-            "description": "eKYC 要求"
+            "description": "eKYC requirements"
           },
           "dataunit": {
             "type": "string",
             "nullable": true,
-            "description": "数据单位"
+            "description": "Unit of data measurement"
           },
           "activationinfo": {
             "type": "string",
             "nullable": true,
-            "description": "激活信息"
+            "description": "Activation instructions"
           },
           "variants": {
             "type": "array",
@@ -98,72 +102,72 @@
             }
           }
         },
-        "required": ["id","title","variants"]
+        "required": ["id", "title", "variants"]
       },
       "Variant": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "Shopify Variant 全局 ID"
+            "description": "Shopify global variant ID"
           },
           "title": {
             "type": "string",
-            "description": "变体标题"
+            "description": "Variant title"
           },
           "price": {
             "type": "number",
             "format": "float",
-            "description": "价格"
+            "description": "Price"
           },
           "currency": {
             "type": "string",
-            "description": "货币代码"
+            "description": "Currency code (e.g. USD)"
           },
           "planname": {
             "type": "string",
             "nullable": true,
-            "description": "计划名称"
+            "description": "Plan name"
           },
           "data": {
             "type": "string",
             "nullable": true,
-            "description": "数据量"
+            "description": "Amount of data included"
           },
           "service_days": {
             "type": "string",
             "nullable": true,
-            "description": "服务天数"
+            "description": "Service duration in days"
           },
           "package_type": {
             "type": "string",
             "nullable": true,
-            "description": "套餐类型"
+            "description": "Type of package (e.g. data only, voice+data)"
           },
           "telephony": {
             "type": "string",
             "nullable": true,
-            "description": "是否支持语音"
+            "description": "Voice support"
           },
           "reducedspeed": {
             "type": "string",
             "nullable": true,
-            "description": "降速后速率"
+            "description": "Speed after data cap is reached"
           }
         },
-        "required": ["id","title","price","currency"]
+        "required": ["id", "title", "price", "currency"]
       },
       "CheckoutRequest": {
         "type": "object",
         "properties": {
           "product_id": {
             "type": "string",
-            "description": "要购买的变体 ID"
+            "description": "Variant ID to purchase"
           },
           "quantity": {
             "type": "integer",
             "default": 1,
-            "description": "购买数量"
+            "description": "Quantity to purchase"
           }
         },
         "required": ["product_id"]
@@ -173,7 +177,7 @@
         "properties": {
           "checkout_url": {
             "type": "string",
-            "description": "跳转 Shopify 结账的链接"
+            "description": "Redirect URL to Shopify checkout"
           }
         },
         "required": ["checkout_url"]
@@ -181,4 +185,3 @@
     }
   }
 }
-
