@@ -3,21 +3,18 @@
   "name_for_human": "ChillaxSIM eSIM 购买",
   "name_for_model": "chillaxsim",
   "description_for_human": "查询并购买 ChillaxSIM 的全球 eSIM 套餐。",
-  "description_for_model": "提供 ChillaxSIM 产品列表、套餐详情，以及生成购买链接的能力。",
+  "description_for_model": "Provides ChillaxSIM product listings, plan details, and generates checkout links.",
   "auth": {
     "type": "none"
   },
-  "servers": [
-  {
-    "url": "https://tarsilazh.github.io/chillaxsim-plugin"
-  }
-]
   "api": {
     "type": "openapi",
-    "url": "https://tarsilazh.github.com/tarsilazh/chillaxsim-plugin/.well-known/openapi.json",
+    "url": "https://tarsilazh.github.io/chillaxsim-plugin/openapi.json",
     "is_user_authenticated": false
   },
-  "logo_url": "https://tarsilazh.github.com/tarsilazh/chillaxsim-plugin/assets/chillaxsim-logo.png",
+  "logo_url": "https://tarsilazh.github.io/chillaxsim-plugin/assets/chillaxsim-logo.png",
   "contact_email": "service@chillaxsim.com",
-  "legal_info_url": "https://chillaxsim.com/policies/privacy-policy"
+  "legal_info_url": "https://chillaxsim.com/policies/privacy-policy",
+  "server_url": "https://tarsilazh.github.io/chillaxsim-plugin"
 }
+
