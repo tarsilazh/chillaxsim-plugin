@@ -15,6 +15,12 @@
   "logo_url": "https://tarsilazh.github.io/chillaxsim-plugin/assets/chillaxsim-logo.png",
   "contact_email": "service@chillaxsim.com",
   "legal_info_url": "https://chillaxsim.com/policies/privacy-policy",
-  "server_url": "https://tarsilazh.github.io/chillaxsim-plugin"
+  "server_url": "https://tarsilazh.github.io/chillaxsim-plugin",
+  "servers": [
+    {
+      "url": "https://tarsilazh.github.io/chillaxsim-plugin"
+    }
+  ]
 }
+
 
